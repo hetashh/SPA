@@ -1,0 +1,45 @@
+﻿@model SPA.ViewModels.DashboardViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<h2>Личный кабинет</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<p>Баланс: $@Model.Balance</p>
+
+<h3>Ваши бронирования:</h3>
+@if (Model.Bookings.Count == 0)
+{
+    <p>У вас нет активных бронирований.</p>
+}
+else
+{
+    <ul>
+        @foreach (var booking in Model.Bookings)
+        {
+            <li>
+                @booking.ProcedureName - @booking.BookingTime
+                <form asp-action="CancelBooking" method="post" style="display:inline;">
+                    <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                    <button type="submit">Отменить</button>
+                </form>
+            </li>
+        }
+    </ul>
+}

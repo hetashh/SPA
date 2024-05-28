@@ -1,0 +1,83 @@
+﻿@model IEnumerable<SPA.Models.Procedure>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Процедуры";
+}
+
+<h2>Процедуры</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@foreach (var procedure in Model)
+{
+    <div>
+        <h3>@procedure.Name</h3>
+        <p>@procedure.Description</p>
+        <p>Цена: $@procedure.Price</p>
+        <form asp-action="Book" method="post">
+            <input type="hidden" name="id" value="@procedure.Id" />
+            <label>Доступное время</label>
+            <select name="bookingDate" onchange="updateTimes(this, @procedure.Id)">
+                @{
+                    DateTime today = DateTime.Today;
+                    DateTime oneMonthFromNow = today.AddMonths(1);
+
+                    while (today <= oneMonthFromNow)
+                    {
+                        <option value="@today.ToString("yyyy-MM-dd")">@today.ToString("yyyy-MM-dd")</option>
+                        today = today.AddDays(1);
+                    }
+                }
+            </select>
+            <select name="bookingTime" class="timeSlots">
+                <!-- Временные слоты будут заполняться JavaScript -->
+            </select>
+            <button type="submit">Забронировать</button>
+        </form>
+    </div>
+}
+
+<script>
+    function updateTimes(dateSelect, procedureId) {
+        var timeSelect = dateSelect.parentElement.querySelector('.timeSlots');
+        var selectedDate = dateSelect.value;
+
+        fetch(`/Procedure/GetAvailableTimes?date=${selectedDate}&procedureId=${procedureId}`)
+            .then(response => response.json())
+            .then(data => {
+                timeSelect.innerHTML = "";
+                var today = new Date();
+                var selectedDateObj = new Date(selectedDate);
+                var isToday = selectedDateObj.toDateString() === today.toDateString();
+
+                data.forEach(hour => {
+                    if (isToday && hour <= today.getHours()) {
+                        return; // Пропустить прошлые часы, если выбран сегодняшний день
+                    }
+                    var option = document.createElement("option");
+                    option.value = `${selectedDate}T${hour}:00`;
+                    option.text = `${hour}:00`;
+                    timeSelect.add(option);
+                });
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('select[name="bookingDate"]').forEach(dateSelect => {
+            updateTimes(dateSelect, dateSelect.closest('form').querySelector('input[name="id"]').value);
+        });
+    });
+</script>

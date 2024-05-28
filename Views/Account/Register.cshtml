@@ -1,0 +1,32 @@
+﻿@model SPA.ViewModels.RegisterViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+}
+
+<h2>Регистрация</h2>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Логин</label>
+        <input asp-for="UserName" />
+        <span asp-validation-for="UserName" style="color:red"></span>
+    </div>
+    <div>
+        <label>Пароль</label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password" style="color:red"></span>
+    </div>
+    <div>
+        <label>Подтвердите пароль</label>
+        <input asp-for="ConfirmPassword" type="password" />
+        <span asp-validation-for="ConfirmPassword" style="color:red"></span>
+    </div>
+    <button type="submit">Регистрация</button>
+</form>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div style="color:red">@ViewBag.ErrorMessage</div>
+}

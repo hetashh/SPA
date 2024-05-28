@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SPA Центр</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Главная страница</a></li>
+                <li><a asp-controller="Procedure" asp-action="Index">Процедуры</a></li>
+                @{
+                    var userName = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+                    if (userName != null)
+                    {
+                        <li><a asp-controller="Account" asp-action="Dashboard">Личный кабинет</a></li>
+                        <li><a asp-controller="Account" asp-action="Logout">Выйти</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Account" asp-action="Login">Авторизация</a></li>
+                        <li><a asp-controller="Account" asp-action="Register">Регистрация</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer>
+        <p>&copy; 2024 - SPA Центр</p>
+    </footer>
+</body>
+</html>

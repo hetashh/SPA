@@ -17,9 +17,17 @@
                 <li><a asp-controller="Procedure" asp-action="Index">Процедуры</a></li>
                 @{
                     var userName = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+                    var userRole = HttpContextAccessor.HttpContext.Session.GetString("UserRole");
                     if (userName != null)
                     {
-                        <li><a asp-controller="Account" asp-action="Dashboard">Личный кабинет</a></li>
+                        if (userRole == "Admin")
+                        {
+                            <li><a asp-controller="Admin" asp-action="Index">Панель управления</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-controller="Account" asp-action="Dashboard">Личный кабинет</a></li>
+                        }
                         <li><a asp-controller="Account" asp-action="Logout">Выйти</a></li>
                     }
                     else
@@ -35,7 +43,7 @@
         @RenderBody()
     </div>
     <footer>
-        <p>SPA Центр</p>
+        <p>&copy; 2024 - SPA Центр</p>
     </footer>
     @RenderSection("Scripts", required: false)
 </body>

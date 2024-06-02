@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SPA.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,7 +36,8 @@ namespace SPA.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,18 +76,19 @@ namespace SPA.Migrations
                 columns: new[] { "Id", "Description", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, "A relaxing full-body massage", "Swedish Massage", 75m },
-                    { 2, "A therapeutic massage with hot stones", "Hot Stone Massage", 100m },
-                    { 3, "A soothing massage with essential oils", "Aromatherapy", 80m }
+                    { 1, "Расслабляющий массаж всего тела", "Шведский массаж", 75m },
+                    { 2, "Лечебный массаж горячими камнями", "Массаж горячими камнями", 100m },
+                    { 3, "Успокаивающий массаж с эфирными маслами", "Ароматерапия", 80m }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Balance", "Password", "UserName" },
+                columns: new[] { "Id", "Balance", "Password", "Role", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 1000m, "password123", "john_doe" },
-                    { 2, 1000m, "password456", "jane_smith" }
+                    { 1, 1000m, "password123", "User", "john_doe" },
+                    { 2, 1000m, "password456", "User", "jane_smith" },
+                    { 3, 1000m, "admin123", "Admin", "admin" }
                 });
 
             migrationBuilder.InsertData(

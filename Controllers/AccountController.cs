@@ -23,6 +23,7 @@ namespace SPA.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -31,14 +32,21 @@ namespace SPA.Controllers
                 if (user != null)
                 {
                     HttpContext.Session.SetString("UserName", user.UserName);
+                    HttpContext.Session.SetString("UserRole", user.Role);
+
+                    if (user.Role == "Admin")
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "Неудачная попытка входа в систему.");
+                ModelState.AddModelError("", "Неуачная попытка входа в систему.");
             }
 
             return View(model);
         }
+
 
         public IActionResult Register()
         {
@@ -60,7 +68,8 @@ namespace SPA.Controllers
                 {
                     UserName = model.UserName,
                     Password = model.Password,
-                    Balance = 1000 // Initial balance for testing
+                    Balance = 1000, // Initial balance for testing
+                    Role = "User"
                 };
 
                 _context.Users.Add(user);

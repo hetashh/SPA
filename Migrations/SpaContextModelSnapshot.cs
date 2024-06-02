@@ -98,22 +98,22 @@ namespace SPA.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "A relaxing full-body massage",
-                            Name = "Swedish Massage",
+                            Description = "Расслабляющий массаж всего тела",
+                            Name = "Шведский массаж",
                             Price = 75m
                         },
                         new
                         {
                             Id = 2,
-                            Description = "A therapeutic massage with hot stones",
-                            Name = "Hot Stone Massage",
+                            Description = "Лечебный массаж горячими камнями",
+                            Name = "Массаж горячими камнями",
                             Price = 100m
                         },
                         new
                         {
                             Id = 3,
-                            Description = "A soothing massage with essential oils",
-                            Name = "Aromatherapy",
+                            Description = "Успокаивающий массаж с эфирными маслами",
+                            Name = "Ароматерапия",
                             Price = 80m
                         });
                 });
@@ -133,6 +133,10 @@ namespace SPA.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -147,6 +151,7 @@ namespace SPA.Migrations
                             Id = 1,
                             Balance = 1000m,
                             Password = "password123",
+                            Role = "User",
                             UserName = "john_doe"
                         },
                         new
@@ -154,7 +159,16 @@ namespace SPA.Migrations
                             Id = 2,
                             Balance = 1000m,
                             Password = "password456",
+                            Role = "User",
                             UserName = "jane_smith"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Balance = 1000m,
+                            Password = "admin123",
+                            Role = "Admin",
+                            UserName = "admin"
                         });
                 });
 

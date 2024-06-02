@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPA.Models;
-using System;
 
 namespace SPA.Data
 {
@@ -16,10 +15,20 @@ namespace SPA.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configuring decimal fields
+            modelBuilder.Entity<Procedure>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Balance)
+                .HasColumnType("decimal(18,2)");
+
             // Seed Users
             modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, UserName = "john_doe", Password = "password123", Balance = 1000 },
-                new User { Id = 2, UserName = "jane_smith", Password = "password456", Balance = 1000 }
+                new User { Id = 1, UserName = "john_doe", Password = "password123", Balance = 1000, Role = "User" },
+                new User { Id = 2, UserName = "jane_smith", Password = "password456", Balance = 1000, Role = "User" },
+                new User { Id = 3, UserName = "admin", Password = "admin123", Balance = 1000, Role = "Admin" } // Admin user
             );
 
             // Seed Procedures

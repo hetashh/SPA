@@ -15,7 +15,7 @@ namespace SPA.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Пароль не подходит.")]
         public string ConfirmPassword { get; set; }
     }
 }

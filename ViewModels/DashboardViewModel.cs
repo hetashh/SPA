@@ -1,4 +1,6 @@
-﻿namespace SPA.ViewModels
+﻿using System.Collections.Generic;
+
+namespace SPA.ViewModels
 {
     public class DashboardViewModel
     {
@@ -8,7 +10,7 @@
 
     public class BookingViewModel
     {
-        public int BookingId { get; set; } // Добавляем поле BookingId
+        public int BookingId { get; set; }
         public string ProcedureName { get; set; }
         public string BookingTime { get; set; }
     }

@@ -4,7 +4,6 @@ using SPA.Data;
 using SPA.Models;
 using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace SPA.Controllers
 {
@@ -24,28 +23,8 @@ namespace SPA.Controllers
         }
 
         [HttpPost]
-        public IActionResult Book(int id, DateTime bookingTime)
+        public IActionResult Book(int id, DateTime bookingDate, string bookingTime)
         {
-            DateTime currentTime = DateTime.Now;
-
-            if (bookingTime < currentTime)
-            {
-                TempData["ErrorMessage"] = "Вы не можете забронировать время, которое уже прошло.";
-                return RedirectToAction("Index");
-            }
-
-            if (bookingTime.Hour < 10 || bookingTime.Hour > 18 || bookingTime.Minute != 0)
-            {
-                TempData["ErrorMessage"] = "Время бронирования должно быть с 10:00 до 19:00 и в целый час.";
-                return RedirectToAction("Index");
-            }
-
-            if (bookingTime > currentTime.AddMonths(1))
-            {
-                TempData["ErrorMessage"] = "Вы можете бронировать только на месяц вперед.";
-                return RedirectToAction("Index");
-            }
-
             var procedure = _context.Procedures.Find(id);
             if (procedure != null)
             {
@@ -55,27 +34,38 @@ namespace SPA.Controllers
                     var user = _context.Users.SingleOrDefault(u => u.UserName == userName);
                     if (user != null)
                     {
-                        var existingBooking = _context.Bookings
-                            .Where(b => b.BookingTime == bookingTime && b.ProcedureId == id)
-                            .SingleOrDefault();
+                        DateTime bookingDateTime = bookingDate.Date.Add(TimeSpan.Parse(bookingTime));
 
-                        if (existingBooking != null)
+                        if (bookingDateTime <= DateTime.Now)
                         {
-                            TempData["ErrorMessage"] = "Выбранное время уже забронировано.";
+                            TempData["ErrorMessage"] = "Вы не можете забронировать врем которое уже прошло";
+                            return RedirectToAction("Index");
+                        }
+
+                        if (_context.Bookings.Any(b => b.ProcedureId == id && b.BookingTime == bookingDateTime))
+                        {
+                            TempData["ErrorMessage"] = "Это время уже занято";
+                            return RedirectToAction("Index");
+                        }
+
+                        if (user.Balance < procedure.Price)
+                        {
+                            TempData["ErrorMessage"] = "У вас недостаточно средств для бронирования";
                             return RedirectToAction("Index");
                         }
 
                         var booking = new Booking
                         {
                             ProcedureId = id,
-                            BookingTime = bookingTime,
+                            BookingTime = bookingDateTime,
                             UserId = user.Id
                         };
 
+                        user.Balance -= procedure.Price;
                         _context.Bookings.Add(booking);
                         _context.SaveChanges();
 
-                        TempData["SuccessMessage"] = "Бронирование успешно!";
+                        TempData["SuccessMessage"] = "Бронирование успешно";
                         return RedirectToAction("Index");
                     }
                 }
@@ -83,25 +73,54 @@ namespace SPA.Controllers
             return NotFound();
         }
 
-        [HttpGet]
-        public JsonResult GetAvailableTimes(string date, int procedureId)
-        {
-            DateTime selectedDate = DateTime.Parse(date);
-            var bookings = _context.Bookings
-                .Where(b => b.BookingTime.Date == selectedDate.Date && b.ProcedureId == procedureId)
-                .Select(b => b.BookingTime.Hour)
-                .ToList();
 
-            var availableHours = new List<int>();
-            for (int hour = 10; hour <= 18; hour++)
+        [HttpPost]
+        public IActionResult CancelBooking(int bookingId)
+        {
+            var booking = _context.Bookings.Find(bookingId);
+            if (booking != null)
             {
-                if (!bookings.Contains(hour))
+                var userName = HttpContext.Session.GetString("UserName");
+                if (userName != null)
                 {
-                    availableHours.Add(hour);
+                    var user = _context.Users.SingleOrDefault(u => u.UserName == userName);
+                    if (user != null && booking.UserId == user.Id)
+                    {
+                        var procedure = _context.Procedures.Find(booking.ProcedureId);
+                        if (procedure != null)
+                        {
+                            user.Balance += procedure.Price;
+                            _context.Bookings.Remove(booking);
+                            _context.SaveChanges();
+
+                            TempData["SuccessMessage"] = "Бронирование отменено";
+                            return RedirectToAction("Dashboard", "Account");
+                        }
+                    }
                 }
             }
-
-            return Json(availableHours);
+            return NotFound();
         }
+
+
+        [HttpGet]
+        public JsonResult GetAvailableTimes(DateTime date, int procedureId)
+        {
+            var times = new List<string>();
+            for (int hour = 10; hour < 19; hour++)
+            {
+                var bookingTime = new DateTime(date.Year, date.Month, date.Day, hour, 0, 0);
+                if (!_context.Bookings.Any(b => b.ProcedureId == procedureId && b.BookingTime == bookingTime))
+                {
+                    times.Add(bookingTime.ToString("HH:mm"));
+                }
+            }
+            return Json(times);
+        }
+
+
+
+
+
     }
 }

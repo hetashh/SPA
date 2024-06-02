@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using SPA.Data;
 using SPA.Models;
 using SPA.ViewModels;
@@ -91,7 +92,7 @@ namespace SPA.Controllers
                         {
                             BookingId = b.Id,
                             ProcedureName = b.Procedure.Name,
-                            BookingTime = b.BookingTime.ToString("yyyy-MM-dd HH:mm") 
+                            BookingTime = b.BookingTime.ToString("yyyy-MM-dd HH:mm")
                         }).ToList();
 
                     var model = new DashboardViewModel
@@ -106,23 +107,5 @@ namespace SPA.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpPost]
-        public IActionResult CancelBooking(int bookingId)
-        {
-            var booking = _context.Bookings.SingleOrDefault(b => b.Id == bookingId);
-            if (booking != null)
-            {
-                _context.Bookings.Remove(booking);
-                _context.SaveChanges();
-
-                TempData["SuccessMessage"] = "Бронирование успешно отменено!";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Бронирование не найдено.";
-            }
-
-            return RedirectToAction("Dashboard");
-        }
     }
 }

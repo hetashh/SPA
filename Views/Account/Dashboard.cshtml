@@ -34,8 +34,8 @@ else
         @foreach (var booking in Model.Bookings)
         {
             <li>
-                @booking.ProcedureName - @booking.BookingTime
-                <form asp-action="CancelBooking" method="post" style="display:inline;">
+                @booking.ProcedureName - @DateTime.Parse(booking.BookingTime).ToString("yyyy-MM-dd HH:mm")
+                <form asp-action="CancelBooking" asp-controller="Procedure" method="post" style="display:inline;">
                     <input type="hidden" name="bookingId" value="@booking.BookingId" />
                     <button type="submit">Отменить</button>
                 </form>

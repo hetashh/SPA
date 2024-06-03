@@ -29,6 +29,7 @@ namespace SPA.Controllers
                     .Where(b => b.UserId == user.Id)
                     .Select(b => new BookingViewModel
                     {
+                        BookingId = b.Id,
                         ProcedureName = procedures.FirstOrDefault(p => p.Id == b.ProcedureId)?.Name,
                         BookingTime = b.BookingTime.ToString("yyyy-MM-dd HH:mm")
                     }).ToList()

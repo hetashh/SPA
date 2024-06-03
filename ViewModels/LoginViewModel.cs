@@ -9,7 +9,7 @@ namespace SPA.ViewModels
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 6)]
+        [StringLength(50, MinimumLength = 4)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

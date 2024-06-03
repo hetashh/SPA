@@ -117,10 +117,5 @@ namespace SPA.Controllers
             }
             return Json(times);
         }
-
-
-
-
-
     }
 }

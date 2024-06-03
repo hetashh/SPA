@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<SPA.Models.Procedure>
-
+@*<link rel="stylesheet" href="~/css/site.css" />*@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Процедуры";
@@ -23,25 +23,32 @@
 
 @foreach (var procedure in Model)
 {
-    <div>
-        <h3>@procedure.Name</h3>
-        <p>@procedure.Description</p>
-        <p>Цена: $@procedure.Price</p>
-        <form asp-action="Book" method="post">
-            <input type="hidden" name="id" value="@procedure.Id" />
-            <label>Дата:</label>
-            <input type="date" name="bookingDate" class="booking-date" data-procedure-id="@procedure.Id" />
-            <label>Время:</label>
-            <select name="bookingTime" class="booking-time" data-procedure-id="@procedure.Id" disabled>
-                <option value="">Выберите время</option>
-            </select>
-            <button type="submit">Забронировать</button>
-        </form>
+    <div class="procedure-card" onclick="toggleBookingForm(@procedure.Id)">
+        <h3 class="procedure-title">@procedure.Name</h3>
+        <h2 class="procedure-price">@procedure.Price ₽</h2>
+        <p class="procedure-description">@procedure.Description</p>
+        <div id="booking-form-@procedure.Id" class="booking-form">
+            <form asp-action="Book" method="post">
+                <input type="hidden" name="id" value="@procedure.Id" />
+                <label>Дата:</label>
+                <input type="date" name="bookingDate" class="booking-date" data-procedure-id="@procedure.Id" />
+                <label>Время:</label>
+                <select name="bookingTime" class="booking-time" data-procedure-id="@procedure.Id" disabled>
+                    <option value="">Выберите время</option>
+                </select>
+                <button type="submit">Забронировать</button>
+            </form>
+        </div>
     </div>
 }
 
 @section Scripts {
     <script>
+        function toggleBookingForm(procedureId) {
+            var bookingForm = document.getElementById(`booking-form-${procedureId}`);
+            bookingForm.classList.toggle('expanded');
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".booking-date").forEach(function (dateInput) {
                 dateInput.addEventListener("change", function () {

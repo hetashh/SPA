@@ -23,7 +23,6 @@ namespace SPA.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -68,7 +67,7 @@ namespace SPA.Controllers
                 {
                     UserName = model.UserName,
                     Password = model.Password,
-                    Balance = 1000, // Initial balance for testing
+                    Balance = 1000, 
                     Role = "User"
                 };
 

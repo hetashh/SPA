@@ -3,7 +3,7 @@ using SPA.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SpaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -16,14 +16,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddHttpContextAccessor(); // ƒобавлено дл€ доступа к HttpContext в представлени€х
+builder.Services.AddHttpContextAccessor(); 
 
 var app = builder.Build();
 
 // Enable session
 app.UseSession();
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

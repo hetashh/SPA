@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+
 }
 
 header {
@@ -26,13 +27,48 @@ nav ul {
 
 .container {
     padding: 2em;
+    min-height: 1000px;
 }
 
-.procedure {
-    border: 1px solid #ccc;
+.procedure-card {
+    border-radius: 8px;
     padding: 1em;
     margin: 1em 0;
+    background: rgb(147,147,235);
+    background: radial-gradient(circle, rgba(147,147,235,1) 56%, rgba(0,212,255,1) 100%);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    position: relative;
 }
+
+    .procedure-card:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+.procedure-title {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.procedure-price{
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.procedure-description {
+    font-size: 0.9em;
+    margin-bottom: 1em;
+}
+
+.booking-form {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+    .booking-form.expanded {
+        max-height: 300px;
+    }
 
 footer {
     text-align: center;

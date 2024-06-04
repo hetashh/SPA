@@ -2,10 +2,10 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Панель администратора";
+    ViewData["Title"] = "Панель Администратора";
 }
 
-<h2>Панель администратора</h2>
+<h2>Панель Администратора</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -14,21 +14,124 @@
     </div>
 }
 
-@foreach (var user in Model)
-{
-    <h3>Пользователь: @user.UserName</h3>
-    <p>Баланс: $@user.Balance</p>
-    <h4>Бронирования:</h4>
-    <ul>
-        @foreach (var booking in user.Bookings)
-        {
-            <li>
-                @booking.ProcedureName - @booking.BookingTime
-                <form asp-action="CancelBooking" method="post" style="display:inline;">
-                    <input type="hidden" name="bookingId" value="@booking.BookingId" />
-                    <button type="submit">Отменить</button>
+<h3>Процедуры</h3>
+<table class="procedure-table">
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Цена</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var procedure in ViewBag.Procedures)
+    {
+        <tr>
+            <td>@procedure.Name</td>
+            <td>@procedure.Description</td>
+            <td>@procedure.Price</td>
+            <td>
+                <a class="btn" asp-action="EditProcedure" asp-route-id="@procedure.Id">Редактировать</a>
+                <form asp-action="DeleteProcedure" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@procedure.Id" />
+                    <button class="btn delete-btn" type="submit">Удалить</button>
                 </form>
-            </li>
+            </td>
+        </tr>
+    }
+</table>
+<a class="btn add-btn" asp-action="CreateProcedure">Добавить новую процедуру</a>
+
+<h3>Пользователи</h3>
+<div class="user-container">
+    @foreach (var user in Model)
+    {
+        <div class="user-card">
+            <h4>@user.UserName</h4>
+            <p>Баланс: @user.Balance ₽</p>
+            <h5>Бронирования:</h5>
+            <ul>
+                @foreach (var booking in user.Bookings)
+                {
+                        <li>
+                            @booking.ProcedureName - @booking.BookingTime
+                            <form asp-action="CancelBooking" method="post" style="display:inline;">
+                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                <button type="submit">Отменить</button>
+                            </form>
+                        </li>                 
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+@*@section Styles {
+    <style>
+        .procedure-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2em;
         }
-    </ul>
+
+            .procedure-table th, .procedure-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .procedure-table th {
+                background-color: #f2f2f2;
+                text-align: left;
+            }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+        }
+
+        .add-btn {
+            background-color: #008CBA;
+        }
+
+        .user-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .user-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1em;
+            margin: 1em;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+            .user-card:hover {
+                box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            }
+
+            .user-card h4 {
+                margin-top: 0;
+            }
+
+            .user-card ul {
+                padding-left: 20px;
+            }
+
+                .user-card ul li {
+                    margin-bottom: 5px;
+                }
+    </style>*@
 }

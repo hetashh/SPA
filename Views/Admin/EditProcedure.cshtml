@@ -1,0 +1,25 @@
+﻿@model SPA.Models.Procedure
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Редактировать процедуру";
+}
+
+<h2>Редактировать процедуру</h2>
+
+<form asp-action="EditProcedure" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="form-group">
+        <label>Название</label>
+        <input type="text" name="Name" class="form-control" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label>Описание</label>
+        <textarea name="Description" class="form-control" required>@Model.Description</textarea>
+    </div>
+    <div class="form-group">
+        <label>Цена</label>
+        <input type="number" name="Price" class="form-control" value="@Model.Price" step="0.01" required />
+    </div>
+    <button type="submit" class="btn">Сохранить</button>
+</form>

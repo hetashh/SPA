@@ -1,6 +1,5 @@
 body {
     font-family: Arial, sans-serif;
-
 }
 
 header {
@@ -27,7 +26,7 @@ nav ul {
 
 .container {
     padding: 2em;
-    min-height: 1000px;
+    min-height: 800px;
 }
 
 .procedure-card {
@@ -39,6 +38,8 @@ nav ul {
     cursor: pointer;
     transition: box-shadow 0.3s ease;
     position: relative;
+    width: 600px;
+    height: 350px;
 }
 
     .procedure-card:hover {
@@ -50,13 +51,13 @@ nav ul {
     margin-bottom: 0.5em;
 }
 
-.procedure-price{
+.procedure-price {
     font-size: 1em;
     margin-bottom: 0.5em;
 }
 
 .procedure-description {
-    font-size: 0.9em;
+    font-size: 1em;
     margin-bottom: 1em;
 }
 
@@ -77,3 +78,71 @@ footer {
     background-color: #333;
     color: white;
 }
+
+.procedure-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+}
+
+    .procedure-table th, .procedure-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .procedure-table th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+.delete-btn {
+    background-color: #f44336;
+}
+
+.add-btn {
+    background-color: #008CBA;
+}
+
+.user-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1em;
+    margin: 1em;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+    .user-card:hover {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .user-card h4 {
+        margin-top: 0;
+    }
+
+    .user-card ul {
+        padding-left: 20px;
+    }
+
+        .user-card ul li {
+            margin-bottom: 5px;
+        }

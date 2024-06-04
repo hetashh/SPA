@@ -35,7 +35,65 @@ namespace SPA.Controllers
                     }).ToList()
             }).ToList();
 
+            ViewBag.Procedures = procedures; // Add procedures to ViewBag for display in the view
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult CreateProcedure()
+        {
+            return View(new Procedure());
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateProcedure(Procedure procedure)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Procedures.Add(procedure);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Процедура успешно добавлена.";
+                return RedirectToAction("Index");
+            }
+            return View(procedure);
+        }
+
+        [HttpGet]
+        public IActionResult EditProcedure(int id)
+        {
+            var procedure = _context.Procedures.Find(id);
+            if (procedure == null)
+            {
+                return NotFound();
+            }
+            return View(procedure);
+        }
+
+        [HttpPost]
+        public IActionResult EditProcedure(Procedure procedure)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Procedures.Update(procedure);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Процедура успешно обновлена.";
+                return RedirectToAction("Index");
+            }
+            return View(procedure);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProcedure(int id)
+        {
+            var procedure = _context.Procedures.Find(id);
+            if (procedure != null)
+            {
+                _context.Procedures.Remove(procedure);
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "Процедура успешно удалена.";
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

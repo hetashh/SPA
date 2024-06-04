@@ -35,7 +35,7 @@ namespace SPA.Controllers
                     }).ToList()
             }).ToList();
 
-            ViewBag.Procedures = procedures; // Add procedures to ViewBag for display in the view
+            ViewBag.Procedures = procedures; 
             return View(viewModel);
         }
 

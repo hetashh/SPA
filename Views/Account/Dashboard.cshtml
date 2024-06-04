@@ -5,41 +5,47 @@
     ViewData["Title"] = "Личный кабинет";
 }
 
-<h2>Личный кабинет</h2>
+<div class="container mt-4">
+    <h2>Личный кабинет</h2>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="user-container">
+        <div class="user-card">
+            <h4>Баланс: $@Model.Balance</h4>
+
+            <h5>Ваши бронирования:</h5>
+            @if (Model.Bookings.Count == 0)
+            {
+                <p>У вас нет активных бронирований.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var booking in Model.Bookings)
+                    {
+                        <li>
+                            @booking.ProcedureName - @DateTime.Parse(booking.BookingTime).ToString("yyyy-MM-dd HH:mm")
+                            <form asp-action="CancelBooking" asp-controller="Procedure" method="post" style="display:inline;">
+                                <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                                <button type="submit" class="btn delete-btn">Отменить</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
     </div>
-}ё
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-<p>Баланс: $@Model.Balance</p>
-
-<h3>Ваши бронирования:</h3>
-@if (Model.Bookings.Count == 0)
-{
-    <p>У вас нет активных бронирований.</p>
-}
-else
-{
-    <ul>
-        @foreach (var booking in Model.Bookings)
-        {
-            <li>
-                @booking.ProcedureName - @DateTime.Parse(booking.BookingTime).ToString("yyyy-MM-dd HH:mm")
-                <form asp-action="CancelBooking" asp-controller="Procedure" method="post" style="display:inline;">
-                    <input type="hidden" name="bookingId" value="@booking.BookingId" />
-                    <button type="submit">Отменить</button>
-                </form>
-            </li>
-        }
-    </ul>
-}
+</div>

@@ -32,14 +32,16 @@ nav ul {
 .procedure-card {
     border-radius: 8px;
     padding: 1em;
-    margin: 1em 0;
+    margin: 1em;
     background: rgb(147,147,235);
     background: radial-gradient(circle, rgba(147,147,235,1) 56%, rgba(0,212,255,1) 100%);
     cursor: pointer;
     transition: box-shadow 0.3s ease;
     position: relative;
-    width: 600px;
-    height: 350px;
+    width: 400px; /* уменьшаем ширину */
+    height: 200px; /* уменьшаем высоту */
+    display: inline-block;
+    vertical-align: top;
 }
 
     .procedure-card:hover {
@@ -47,17 +49,17 @@ nav ul {
     }
 
 .procedure-title {
-    font-size: 1.5em;
+    font-size: 2em; /* увеличиваем шрифт */
     margin-bottom: 0.5em;
 }
 
 .procedure-price {
-    font-size: 1em;
+    font-size: 1.5em; /* увеличиваем шрифт */
     margin-bottom: 0.5em;
 }
 
 .procedure-description {
-    font-size: 1em;
+    font-size: 1.2em; /* увеличиваем шрифт */
     margin-bottom: 1em;
 }
 

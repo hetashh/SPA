@@ -2,26 +2,28 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Авторизация";
 }
 
-<h2>Авторизация</h2>
+<div class="container mt-4">
+    <h2>Авторизация</h2>
 
-<form asp-action="Login" method="post">
-    <div>
-        <label>Логин</label>
-        <input asp-for="UserName" />
-        <span asp-validation-for="UserName" style="color:red"></span>
-    </div>
-    <div>
-        <label>Пароль</label>
-        <input asp-for="Password" type="password" />
-        <span asp-validation-for="Password" style="color:red"></span>
-    </div>
-    <button type="submit">Войти</button>
-</form>
+    <form asp-action="Login" method="post">
+        <div class="form-group">
+            <label>Логин</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
 
-@if (ViewBag.ErrorMessage != null)
-{
-    <div style="color:red">@ViewBag.ErrorMessage</div>
-}
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger mt-2">@ViewBag.ErrorMessage</div>
+    }
+</div>

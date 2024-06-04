@@ -1,52 +1,60 @@
 ﻿@model IEnumerable<SPA.Models.Procedure>
-@*<link rel="stylesheet" href="~/css/site.css" />*@
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Процедуры";
 }
 
-<h2>Процедуры</h2>
+<div class="container mt-4">
+    <h2>Процедуры</h2>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@foreach (var procedure in Model)
-{
-    <div class="procedure-card" onclick="toggleBookingForm(@procedure.Id)">
-        <h3 class="procedure-title">@procedure.Name</h3>
-        <h2 class="procedure-price">@procedure.Price ₽</h2>
-        <p class="procedure-description">@procedure.Description</p>
-        <div id="booking-form-@procedure.Id" class="booking-form">
-            <form asp-action="Book" method="post">
-                <input type="hidden" name="id" value="@procedure.Id" />
-                <label>Дата:</label>
-                <input type="date" name="bookingDate" class="booking-date" data-procedure-id="@procedure.Id" />
-                <label>Время:</label>
-                <select name="bookingTime" class="booking-time" data-procedure-id="@procedure.Id" disabled>
-                    <option value="">Выберите время</option>
-                </select>
-                <button type="submit">Забронировать</button>
-            </form>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
         </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var procedure in Model)
+        {
+            <div class="procedure-card" onclick="expandBookingForm(@procedure.Id)">
+                <h5 class="procedure-title">@procedure.Name</h5>
+                <h6 class="procedure-price">@procedure.Price ₽</h6>
+                <p class="procedure-description">@procedure.Description</p>
+                <div id="booking-form-@procedure.Id" class="booking-form">
+                    <form asp-action="Book" method="post">
+                        <input type="hidden" name="id" value="@procedure.Id" />
+                        <div class="form-group">
+                            <label>Дата:</label>
+                            <input type="date" name="bookingDate" class="form-control booking-date" data-procedure-id="@procedure.Id" />
+                        </div>
+                        <div class="form-group">
+                            <label>Время:</label>
+                            <select name="bookingTime" class="form-control booking-time" data-procedure-id="@procedure.Id" disabled>
+                                <option value="">Выберите время</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Забронировать</button>
+                    </form>
+                </div>
+            </div>
+        }
     </div>
-}
+</div>
 
 @section Scripts {
     <script>
-        function toggleBookingForm(procedureId) {
+        function expandBookingForm(procedureId) {
             var bookingForm = document.getElementById(`booking-form-${procedureId}`);
-            bookingForm.classList.toggle('expanded');
+            bookingForm.classList.add('expanded');
         }
 
         document.addEventListener("DOMContentLoaded", function () {

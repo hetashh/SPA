@@ -20,7 +20,6 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-// Enable session
 app.UseSession();
 
 

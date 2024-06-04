@@ -34,17 +34,19 @@ nav ul {
 /* Стили для карточек процедур */
 .procedure-card {
     border-radius: 8px;
-    padding: 0.1em;
+    padding: 1em;
     margin: 1em;
     background: rgb(147,147,235);
     background: radial-gradient(circle, rgba(147,147,235,1) 56%, rgba(0,212,255,1) 100%);
     cursor: pointer;
-    transition: all 0.3s ease; /* Для плавного перехода */
+    transition: all 0.3s ease; 
     position: relative;
     width: 400px;
     display: inline-block;
     vertical-align: top;
     min-height: 100px;
+    height: 500px;
+
 }
 
 .procedure-info { 
@@ -53,11 +55,12 @@ nav ul {
 
 .procedure-title {
     font-size: 2em;
-
+    margin: 0px;
 }
 
 .procedure-price {
     font-size: 1.5em;
+    margin: 0px;
 
 }
 
@@ -66,16 +69,16 @@ nav ul {
     margin-bottom: 1em;
 }
 
-/* Стили для формы бронирования */
+/*   форма бронирования */
 .booking-form {
-    height: 0; /* Начальная высота 0 */
-    overflow: hidden;
+    height: 0; 
+/*    overflow: hidden;*/
     transition: height 0.5s ease;
-    padding: 0 1em; /* Добавляем отступы */
+    padding: 0 1em; 
 }
 
     .booking-form.expanded {
-        height: auto; /* Автоматическая высота при раскрытии */
+        height: auto; 
     }
 
 footer {
@@ -84,7 +87,7 @@ footer {
     padding: 1em;
     background-color: #333;
     color: white;
-    clear: both; /* Очищаем float */
+    clear: both; 
 }
 
 .procedure-table {
@@ -134,9 +137,11 @@ footer {
     border-radius: 8px;
     padding: 1em;
     margin: 1em;
-    width: 300px;
+    width: 1000px;
+    height:auto;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: box-shadow 0.3s ease;
+    font-size: 1em;
 }
 
     .user-card:hover {
@@ -200,3 +205,4 @@ footer {
         border-radius: 4px;
         cursor: pointer;
     }
+

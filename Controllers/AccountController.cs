@@ -40,7 +40,7 @@ namespace SPA.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "Неуачная попытка входа в систему.");
+                ModelState.AddModelError("", "Неверный логин или пароль.");
             }
 
             return View(model);
@@ -63,11 +63,17 @@ namespace SPA.Controllers
                     return View(model);
                 }
 
+                if (model.Password != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Пароли не совпадают.");
+                    return View(model);
+                }
+
                 var user = new User
                 {
                     UserName = model.UserName,
                     Password = model.Password,
-                    Balance = 1000, 
+                    Balance = 1000,
                     Role = "User"
                 };
 

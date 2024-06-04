@@ -25,6 +25,12 @@ namespace SPA.Controllers
         [HttpPost]
         public IActionResult Book(int id, DateTime bookingDate, string bookingTime)
         {
+            if (string.IsNullOrEmpty(bookingTime))
+            {
+                TempData["ErrorMessage"] = "Выберите время для бронирования.";
+                return RedirectToAction("Index");
+            }
+
             var procedure = _context.Procedures.Find(id);
             if (procedure != null)
             {
@@ -38,19 +44,19 @@ namespace SPA.Controllers
 
                         if (bookingDateTime <= DateTime.Now)
                         {
-                            TempData["ErrorMessage"] = "Вы не можете забронировать врем которое уже прошло";
+                            TempData["ErrorMessage"] = "Вы не можете забронировать время, которое уже прошло.";
                             return RedirectToAction("Index");
                         }
 
                         if (_context.Bookings.Any(b => b.ProcedureId == id && b.BookingTime == bookingDateTime))
                         {
-                            TempData["ErrorMessage"] = "Это время уже занято";
+                            TempData["ErrorMessage"] = "Это время уже занято.";
                             return RedirectToAction("Index");
                         }
 
                         if (user.Balance < procedure.Price)
                         {
-                            TempData["ErrorMessage"] = "У вас недостаточно средств для бронирования";
+                            TempData["ErrorMessage"] = "У вас недостаточно средств для бронирования.";
                             return RedirectToAction("Index");
                         }
 
@@ -65,7 +71,7 @@ namespace SPA.Controllers
                         _context.Bookings.Add(booking);
                         _context.SaveChanges();
 
-                        TempData["SuccessMessage"] = "Бронирование успешно";
+                        TempData["SuccessMessage"] = "Бронирование успешно!";
                         return RedirectToAction("Index");
                     }
                 }
@@ -93,7 +99,7 @@ namespace SPA.Controllers
                             _context.Bookings.Remove(booking);
                             _context.SaveChanges();
 
-                            TempData["SuccessMessage"] = "Бронирование отменено";
+                            TempData["SuccessMessage"] = "Бронирование отменено!";
                             return RedirectToAction("Dashboard", "Account");
                         }
                     }

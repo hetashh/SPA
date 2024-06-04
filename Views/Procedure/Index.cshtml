@@ -25,10 +25,12 @@
     <div class="row">
         @foreach (var procedure in Model)
         {
-            <div class="procedure-card" onclick="expandBookingForm(@procedure.Id)">
-                <h5 class="procedure-title">@procedure.Name</h5>
-                <h6 class="procedure-price">@procedure.Price ₽</h6>
-                <p class="procedure-description">@procedure.Description</p>
+            <div class="procedure-card">
+                <div class="procedure-info" onclick="toggleBookingForm(@procedure.Id)">
+                    <h5 class="procedure-title">@procedure.Name</h5>
+                    <h6 class="procedure-price">@procedure.Price ₽</h6>
+                    <p class="procedure-description">@procedure.Description</p>
+                </div>
                 <div id="booking-form-@procedure.Id" class="booking-form">
                     <form asp-action="Book" method="post">
                         <input type="hidden" name="id" value="@procedure.Id" />
@@ -52,9 +54,9 @@
 
 @section Scripts {
     <script>
-        function expandBookingForm(procedureId) {
+        function toggleBookingForm(procedureId) {
             var bookingForm = document.getElementById(`booking-form-${procedureId}`);
-            bookingForm.classList.add('expanded');
+            bookingForm.classList.toggle('expanded');
         }
 
         document.addEventListener("DOMContentLoaded", function () {

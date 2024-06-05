@@ -52,25 +52,36 @@
     </div>
 </div>
 
-@section Scripts {
+@section Scripts { @*ПОЧИНИТЬ*@
     <script>
+        // Функция для переключения видимости формы бронирования
         function toggleBookingForm(procedureId) {
+            // Получаем форму бронирования по ID процедуры
             var bookingForm = document.getElementById(`booking-form-${procedureId}`);
+            // Переключаем класс 'expanded' у формы для показа/скрытия
             bookingForm.classList.toggle('expanded');
         }
 
+        // Добавляем обработчик событий при загрузке документа
         document.addEventListener("DOMContentLoaded", function () {
+            // Проходимся по всем элементам с классом 'booking-date'
             document.querySelectorAll(".booking-date").forEach(function (dateInput) {
+                // Добавляем обработчик события 'change' для каждого элемента
                 dateInput.addEventListener("change", function () {
+                    // Получаем ID процедуры и выбранную дату бронирования
                     var procedureId = this.getAttribute("data-procedure-id");
                     var bookingDate = this.value;
+                    // Получаем соответствующий элемент 'select' для выбора времени
                     var timeSelect = document.querySelector(`.booking-time[data-procedure-id='${procedureId}']`);
 
+                    // Если дата выбрана, то активируем 'select' для выбора времени и загружаем доступное время
                     if (bookingDate) {
                         timeSelect.disabled = false;
+                        // Запрашиваем доступное время для выбранной даты и процедуры
                         fetch(`/Procedure/GetAvailableTimes?date=${bookingDate}&procedureId=${procedureId}`)
                             .then(response => response.json())
                             .then(data => {
+                                // Очищаем 'select' и добавляем опции с доступным временем
                                 timeSelect.innerHTML = "<option value=''>Выберите время</option>";
                                 data.forEach(time => {
                                     var option = document.createElement("option");
@@ -80,6 +91,7 @@
                                 });
                             });
                     } else {
+                        // Если дата не выбрана, деактивируем 'select' и очищаем его
                         timeSelect.disabled = true;
                         timeSelect.innerHTML = "<option value=''>Выберите время</option>";
                     }
@@ -87,4 +99,5 @@
             });
         });
     </script>
+}
 }
